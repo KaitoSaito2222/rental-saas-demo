@@ -1,0 +1,15 @@
+export enum Province {
+  BC = 'BC',
+  AB = 'AB',
+  SK = 'SK',
+  MB = 'MB',
+  ON = 'ON',
+  QC = 'QC',
+  NB = 'NB',
+  NS = 'NS',
+  PE = 'PE',
+  NL = 'NL',
+  NT = 'NT',
+  NU = 'NU',
+  YT = 'YT',
+}

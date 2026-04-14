@@ -1,0 +1,148 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  LANDLORD
+  PM
+  TENANT
+  ADMIN
+}
+
+enum OrganizationPlan {
+  FREE
+  PRO
+  ENTERPRISE
+}
+
+enum Province {
+  BC
+  AB
+  SK
+  MB
+  ON
+  QC
+  NB
+  NS
+  PE
+  NL
+  NT
+  NU
+  YT
+}
+
+enum ApplicationStatus {
+  PENDING
+  REVIEWED
+  APPROVED
+  REJECTED
+}
+
+enum AuditAction {
+  REGISTER
+  LOGIN
+  PROPERTY_CREATED
+  APPLICATION_SUBMITTED
+  APPLICATION_STATUS_UPDATED
+}
+
+enum ResourceType {
+  ORGANIZATION
+  USER
+  SESSION
+  PROPERTY
+  APPLICATION
+}
+
+model Organization {
+  id        String            @id @default(cuid())
+  name      String
+  slug      String            @unique
+  plan      OrganizationPlan  @default(FREE)
+  country   String
+  timezone   String
+  users     User[]
+  properties Property[]
+  applications Application[]
+  auditLogs AuditLog[]
+  sessions  Session[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model User {
+  id             String   @id @default(cuid())
+  organizationId  String
+  organization    Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  email          String
+  passwordHash   String
+  role           Role
+  sessions       Session[]
+  auditLogs      AuditLog[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@unique([organizationId, email])
+}
+
+model Session {
+  id             String   @id
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token          String   @unique
+  expiresAt      DateTime
+  createdAt      DateTime @default(now())
+
+  @@index([organizationId, userId])
+}
+
+model Property {
+  id             String   @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  name           String
+  address        String
+  province       Province
+  applications   Application[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([organizationId])
+}
+
+model Application {
+  id             String   @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  propertyId     String
+  property       Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  applicantEmail String
+  income         Int
+  status         ApplicationStatus @default(PENDING)
+  notes          String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([organizationId, propertyId])
+}
+
+model AuditLog {
+  id             String   @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  userId         String?
+  user           User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action         AuditAction
+  resourceType   ResourceType
+  resourceId     String
+  createdAt      DateTime @default(now())
+
+  @@index([organizationId, createdAt])
+}

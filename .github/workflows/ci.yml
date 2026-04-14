@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  terraform_validate:
+    name: Terraform validate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.8.5
+
+      - name: Format check
+        run: terraform -chdir=infra fmt -check -recursive
+
+      - name: Initialize Terraform
+        run: terraform -chdir=infra init -backend=false
+
+      - name: Validate Terraform
+        run: terraform -chdir=infra validate
+
+  app_checks:
+    name: App lint, test, build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        if: hashFiles('package.json') != ''
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Run app checks when the workspace exists
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ ! -f package.json ]]; then
+            echo "No root package.json yet, so app checks are skipped for this scaffold."
+            exit 0
+          fi
+
+          npm install
+          npm run lint --if-present
+          npm test --if-present
+          npm run build --if-present
