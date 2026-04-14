@@ -1,6 +1,7 @@
 'use client';
 
 import { FormEvent, useEffect, useState } from 'react';
+import Link from 'next/link';
 import { apiFetch } from '../../../../lib/api';
 
 type Application = {
@@ -11,6 +12,13 @@ type Application = {
   notes?: string | null;
 };
 
+const statusColors: Record<string, string> = {
+  PENDING: 'bg-yellow-50 text-yellow-700 border-yellow-200',
+  REVIEWED: 'bg-blue-50 text-blue-700 border-blue-200',
+  APPROVED: 'bg-green-50 text-green-700 border-green-200',
+  REJECTED: 'bg-red-50 text-red-700 border-red-200',
+};
+
 export default function ApplicationDetailPage({ params }: { params: { id: string } }) {
   const [application, setApplication] = useState<Application | null>(null);
   const [message, setMessage] = useState('');
@@ -19,7 +27,9 @@ export default function ApplicationDetailPage({ params }: { params: { id: string
   useEffect(() => {
     apiFetch<Application>(`/applications/${params.id}`)
       .then(setApplication)
-      .catch((fetchError) => setError(fetchError instanceof Error ? fetchError.message : 'Failed to load application'));
+      .catch((fetchError) =>
+        setError(fetchError instanceof Error ? fetchError.message : 'Failed to load application'),
+      );
   }, [params.id]);
 
   async function updateStatus(event: FormEvent<HTMLFormElement>) {
@@ -33,33 +43,74 @@ export default function ApplicationDetailPage({ params }: { params: { id: string
       });
 
       setApplication(updated);
-      setMessage('Status updated');
+      setMessage('Status updated successfully.');
     } catch (updateError) {
       setError(updateError instanceof Error ? updateError.message : 'Failed to update status');
     }
   }
 
   return (
-    <section className="space-y-6">
-      {error ? <p className="rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p> : null}
-      <article className="rounded-3xl border border-[var(--panel-border)] bg-white/80 p-8 shadow-soft backdrop-blur">
-        <h2 className="text-2xl font-semibold text-ink">Application {application?.id ?? 'loading...'}</h2>
-        <p className="mt-2 text-slate-600">Applicant: {application?.applicantEmail}</p>
-        <p className="mt-2 text-slate-600">Income: {application?.income}</p>
-        <p className="mt-2 text-slate-600">Status: {application?.status}</p>
-        <p className="mt-2 text-slate-600">Notes: {application?.notes ?? 'None'}</p>
-      </article>
-      <form onSubmit={updateStatus} className="max-w-md rounded-3xl border border-[var(--panel-border)] bg-white/80 p-8 shadow-soft backdrop-blur">
-        <h3 className="text-lg font-semibold text-ink">Update status</h3>
-        <select name="status" defaultValue={application?.status ?? 'PENDING'} className="mt-4 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm">
+    <div className="space-y-5">
+      <Link href="/dashboard/properties" className="inline-flex items-center gap-1.5 text-sm text-[var(--muted)] hover:text-primary transition-colors mb-1">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="15 18 9 12 15 6" />
+        </svg>
+        Properties
+      </Link>
+
+      {error && (
+        <p className="rounded-2xl bg-red-50 border border-red-100 px-4 py-3 text-sm text-red-600">{error}</p>
+      )}
+
+      <div className="rounded-2xl border border-[var(--border)] bg-white p-5">
+        <h2 className="text-lg font-bold text-primary mb-4">Application Details</h2>
+        <div className="space-y-3">
+          <div className="flex items-center justify-between py-2 border-b border-[var(--border)]">
+            <span className="text-sm text-[var(--muted)]">Applicant</span>
+            <span className="text-sm font-medium text-primary">{application?.applicantEmail ?? '...'}</span>
+          </div>
+          <div className="flex items-center justify-between py-2 border-b border-[var(--border)]">
+            <span className="text-sm text-[var(--muted)]">Annual Income</span>
+            <span className="text-sm font-medium text-primary">${application?.income?.toLocaleString() ?? '...'}</span>
+          </div>
+          <div className="flex items-center justify-between py-2 border-b border-[var(--border)]">
+            <span className="text-sm text-[var(--muted)]">Status</span>
+            {application?.status ? (
+              <span className={`text-xs font-medium px-2.5 py-1 rounded-full border ${statusColors[application.status] ?? 'bg-gray-50 text-gray-600 border-gray-200'}`}>
+                {application.status.charAt(0) + application.status.slice(1).toLowerCase()}
+              </span>
+            ) : (
+              <span className="text-sm text-[var(--muted)]">...</span>
+            )}
+          </div>
+          {application?.notes && (
+            <div className="py-2">
+              <span className="text-sm text-[var(--muted)]">Notes</span>
+              <p className="text-sm text-primary mt-1">{application.notes}</p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <form onSubmit={updateStatus} className="rounded-2xl border border-[var(--border)] bg-white p-5 space-y-4">
+        <h3 className="text-base font-semibold text-primary">Update Status</h3>
+        <select
+          name="status"
+          defaultValue={application?.status ?? 'PENDING'}
+          className="w-full rounded-xl border border-[var(--border)] bg-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/10 focus:border-primary/30"
+        >
           <option value="PENDING">Pending</option>
           <option value="REVIEWED">Reviewed</option>
           <option value="APPROVED">Approved</option>
           <option value="REJECTED">Rejected</option>
         </select>
-        {message ? <p className="mt-4 rounded-2xl bg-emerald-50 px-4 py-3 text-sm text-emerald-700">{message}</p> : null}
-        <button className="mt-4 rounded-2xl bg-ink px-4 py-3 text-sm font-semibold text-sand">Save</button>
+        {message && (
+          <p className="rounded-xl bg-green-50 border border-green-100 px-4 py-3 text-sm text-green-700">{message}</p>
+        )}
+        <button className="w-full bg-primary text-white text-sm font-semibold py-3 rounded-full hover:opacity-90 transition-opacity">
+          Save Status
+        </button>
       </form>
-    </section>
+    </div>
   );
 }

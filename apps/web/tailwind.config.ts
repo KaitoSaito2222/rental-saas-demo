@@ -5,13 +5,14 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        ink: '#0f172a',
-        sand: '#f8f4e8',
-        ember: '#f97316',
-        slate: '#475569',
+        primary: '#0a0a0a',
+        muted: '#6b7280',
+        surface: '#f9fafb',
+        border: '#e5e7eb',
       },
       boxShadow: {
-        soft: '0 18px 60px rgba(15, 23, 42, 0.12)',
+        soft: '0 2px 12px rgba(0, 0, 0, 0.06)',
+        card: '0 1px 3px rgba(0, 0, 0, 0.08)',
       },
     },
   },

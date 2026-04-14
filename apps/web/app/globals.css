@@ -4,17 +4,15 @@
 
 :root {
   color-scheme: light;
-  --background: #f8f4e8;
-  --foreground: #0f172a;
-  --panel: rgba(255, 255, 255, 0.78);
-  --panel-border: rgba(15, 23, 42, 0.08);
+  --background: #ffffff;
+  --foreground: #0a0a0a;
+  --border: #e5e7eb;
+  --surface: #f9fafb;
+  --muted: #6b7280;
 }
 
 html {
-  background:
-    radial-gradient(circle at top left, rgba(249, 115, 22, 0.16), transparent 30%),
-    radial-gradient(circle at top right, rgba(15, 23, 42, 0.08), transparent 24%),
-    var(--background);
+  background: var(--background);
   color: var(--foreground);
 }
 

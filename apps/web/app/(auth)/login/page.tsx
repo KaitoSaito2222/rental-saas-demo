@@ -44,23 +44,70 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-md items-center px-6 py-16">
-      <form onSubmit={onSubmit} className="w-full rounded-3xl border border-[var(--panel-border)] bg-white/85 p-8 shadow-soft backdrop-blur">
-        <h1 className="text-3xl font-semibold text-ink">Sign in</h1>
-        <p className="mt-2 text-sm text-slate-600">Use the demo organization slug and your email.</p>
-        <div className="mt-6 space-y-4">
-          <input name="organizationSlug" placeholder="organization slug" className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm" required />
-          <input name="email" type="email" placeholder="email" className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm" required />
-          <input name="password" type="password" placeholder="password" className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm" required />
-          {error ? <p className="rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p> : null}
-          <button disabled={loading} className="w-full rounded-2xl bg-ink px-4 py-3 text-sm font-semibold text-sand disabled:opacity-60">
+    <main className="min-h-screen bg-white flex flex-col items-center justify-center px-6 py-16">
+      <div className="w-full max-w-sm">
+        <h1 className="text-2xl font-bold text-primary text-center mb-1">Welcome back</h1>
+        <p className="text-sm text-[var(--muted)] text-center mb-8">Sign in to your account</p>
+
+        {/* Demo hint */}
+        <div className="rounded-xl bg-[var(--surface)] border border-[var(--border)] px-4 py-3 mb-6">
+          <p className="text-xs font-semibold text-primary mb-1">Demo credentials</p>
+          <p className="text-xs text-[var(--muted)]">Slug: <span className="font-mono text-primary">maple-properties</span></p>
+          <p className="text-xs text-[var(--muted)]">Email: <span className="font-mono text-primary">landlord@demo.com</span></p>
+          <p className="text-xs text-[var(--muted)]">Password: <span className="font-mono text-primary">demo1234</span></p>
+        </div>
+
+        <form onSubmit={onSubmit} className="space-y-3">
+          <div>
+            <label className="block text-sm font-medium text-primary mb-1.5">Organization slug</label>
+            <input
+              name="organizationSlug"
+              placeholder="maple-properties"
+              defaultValue="maple-properties"
+              className="w-full rounded-xl border border-[var(--border)] bg-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/10 focus:border-primary/30"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-primary mb-1.5">Email</label>
+            <input
+              name="email"
+              type="email"
+              placeholder="landlord@demo.com"
+              className="w-full rounded-xl border border-[var(--border)] bg-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/10 focus:border-primary/30"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-primary mb-1.5">Password</label>
+            <input
+              name="password"
+              type="password"
+              placeholder="••••••••"
+              className="w-full rounded-xl border border-[var(--border)] bg-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/10 focus:border-primary/30"
+              required
+            />
+          </div>
+
+          {error && (
+            <p className="rounded-xl bg-red-50 border border-red-100 px-4 py-3 text-sm text-red-600">{error}</p>
+          )}
+
+          <button
+            disabled={loading}
+            className="w-full bg-primary text-white text-sm font-semibold py-3 rounded-full hover:opacity-90 transition-opacity disabled:opacity-50 mt-1"
+          >
             {loading ? 'Signing in...' : 'Sign in'}
           </button>
-        </div>
-        <p className="mt-6 text-sm text-slate-600">
-          Need an account? <Link className="font-semibold text-ink underline" href="/register">Register</Link>
+        </form>
+
+        <p className="mt-6 text-sm text-[var(--muted)] text-center">
+          Don&apos;t have an account?{' '}
+          <Link className="font-semibold text-primary" href="/register">
+            Register
+          </Link>
         </p>
-      </form>
+      </div>
     </main>
   );
 }
