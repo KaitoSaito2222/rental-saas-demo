@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "tsx watch src/main.ts",
     "build": "tsc --build",
-    "lint": "tsc --build --noEmit",
+    "lint": "tsc --build",
     "test": "echo 'API tests will be added with the first integration suite'",
     "db:migrate:dev": "prisma migrate dev",
     "db:seed": "tsx prisma/seed.ts"
