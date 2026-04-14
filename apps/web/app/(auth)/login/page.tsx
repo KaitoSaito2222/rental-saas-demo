@@ -50,11 +50,19 @@ export default function LoginPage() {
         <p className="text-sm text-[var(--muted)] text-center mb-8">Sign in to your account</p>
 
         {/* Demo hint */}
-        <div className="rounded-xl bg-[var(--surface)] border border-[var(--border)] px-4 py-3 mb-6">
-          <p className="text-xs font-semibold text-primary mb-1">Demo credentials</p>
-          <p className="text-xs text-[var(--muted)]">Slug: <span className="font-mono text-primary">maple-properties</span></p>
-          <p className="text-xs text-[var(--muted)]">Email: <span className="font-mono text-primary">landlord@demo.com</span></p>
-          <p className="text-xs text-[var(--muted)]">Password: <span className="font-mono text-primary">demo1234</span></p>
+        <div className="rounded-xl bg-[var(--surface)] border border-[var(--border)] px-4 py-3 mb-6 space-y-2">
+          <p className="text-xs font-semibold text-primary">Demo credentials</p>
+          <p className="text-xs text-[var(--muted)]">Org slug: <span className="font-mono text-primary">maple-properties</span></p>
+          <div className="border-t border-[var(--border)] pt-2 space-y-1">
+            <p className="text-xs font-medium text-primary">Landlord</p>
+            <p className="text-xs text-[var(--muted)]">Email: <span className="font-mono text-primary">landlord@demo.com</span></p>
+            <p className="text-xs text-[var(--muted)]">Password: <span className="font-mono text-primary">demo1234</span></p>
+          </div>
+          <div className="border-t border-[var(--border)] pt-2 space-y-1">
+            <p className="text-xs font-medium text-primary">Tenant</p>
+            <p className="text-xs text-[var(--muted)]">Email: <span className="font-mono text-primary">tenant@demo.com</span></p>
+            <p className="text-xs text-[var(--muted)]">Password: <span className="font-mono text-primary">demo1234</span></p>
+          </div>
         </div>
 
         <form onSubmit={onSubmit} className="space-y-3">

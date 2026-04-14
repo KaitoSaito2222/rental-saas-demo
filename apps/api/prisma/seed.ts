@@ -143,24 +143,13 @@ async function main() {
     });
   }
 
-  // ─── Tenant org ────────────────────────────────────────────────────────────
-  const tenantOrg = await prisma.organization.upsert({
-    where: { slug: 'tenant-demo' },
-    update: {},
-    create: {
-      name: 'Demo Tenant',
-      slug: 'tenant-demo',
-      plan: OrganizationPlan.FREE,
-      country: 'CA',
-      timezone: 'America/Vancouver',
-    },
-  });
-
+  // ─── Tenant user (same org as landlord) ───────────────────────────────────
+  // Both users share the same org so tenant can see the same properties/applications.
   const tenant = await prisma.user.upsert({
-    where: { organizationId_email: { organizationId: tenantOrg.id, email: 'tenant@demo.com' } },
+    where: { organizationId_email: { organizationId: landlordOrg.id, email: 'tenant@demo.com' } },
     update: {},
     create: {
-      organizationId: tenantOrg.id,
+      organizationId: landlordOrg.id,
       email: 'tenant@demo.com',
       passwordHash,
       role: Role.TENANT,
@@ -169,18 +158,18 @@ async function main() {
 
   await prisma.auditLog.create({
     data: {
-      organizationId: tenantOrg.id,
+      organizationId: landlordOrg.id,
       userId: tenant.id,
       action: AuditAction.REGISTER,
-      resourceType: ResourceType.ORGANIZATION,
-      resourceId: tenantOrg.id,
+      resourceType: ResourceType.USER,
+      resourceId: tenant.id,
     },
   });
 
   console.log('\n✓ Seed complete\n');
-  console.log('Demo accounts:');
-  console.log('  Landlord  → org: maple-properties | email: landlord@demo.com | password: demo1234');
-  console.log('  Tenant    → org: tenant-demo      | email: tenant@demo.com   | password: demo1234');
+  console.log('Demo accounts (both use org slug: maple-properties):');
+  console.log('  Landlord  → email: landlord@demo.com | password: demo1234');
+  console.log('  Tenant    → email: tenant@demo.com   | password: demo1234');
   console.log('\nProperties (3): Granville Townhome, Yaletown Studio, Kitsilano Apartment');
   console.log('Applications (4): PENDING, REVIEWED, APPROVED, REJECTED\n');
 }
