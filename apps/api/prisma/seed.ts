@@ -6,6 +6,11 @@ const prisma = new PrismaClient();
 async function main() {
   const passwordHash = await bcrypt.hash('demo1234', 12);
 
+  // Remove legacy demo orgs so landlord/tenant always end up in one org for demos.
+  await prisma.organization.deleteMany({
+    where: { slug: { in: ['tenant-demo', 'test'] } },
+  });
+
   // ─── Landlord org ─────────────────────────────────────────────────────────
   const landlordOrg = await prisma.organization.upsert({
     where: { slug: 'maple-properties' },

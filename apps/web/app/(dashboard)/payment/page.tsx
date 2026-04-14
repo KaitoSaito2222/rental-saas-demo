@@ -14,8 +14,8 @@ export default function PaymentPage() {
         <p className="text-sm text-[var(--muted)] mb-4">
           Track rent payments, receipts, and payment status in one place.
         </p>
-        <span className="inline-block bg-[var(--surface)] text-[var(--muted)] text-xs font-medium px-3 py-1 rounded-full border border-[var(--border)]">
-          Coming soon
+        <span className="inline-block bg-amber-50 text-amber-600 text-xs font-semibold px-3 py-1 rounded-full border border-amber-200">
+          Coming Soon
         </span>
       </div>
 
@@ -30,8 +30,8 @@ export default function PaymentPage() {
         <p className="text-sm text-[var(--muted)] mb-4">
           Build your credit score by reporting on-time rent payments to Equifax.
         </p>
-        <span className="inline-block bg-[var(--surface)] text-[var(--muted)] text-xs font-medium px-3 py-1 rounded-full border border-[var(--border)]">
-          Coming soon
+        <span className="inline-block bg-amber-50 text-amber-600 text-xs font-semibold px-3 py-1 rounded-full border border-amber-200">
+          Coming Soon
         </span>
       </div>
     </div>

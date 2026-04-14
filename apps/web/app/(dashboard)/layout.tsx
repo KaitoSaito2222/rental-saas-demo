@@ -19,7 +19,7 @@ export default function DashboardLayout({ children }: Readonly<{ children: React
   return (
     <div className="min-h-screen bg-white flex flex-col">
       <TopHeader />
-      <main className="flex-1 px-6 py-8 max-w-6xl mx-auto w-full">
+      <main className="flex-1 px-4 sm:px-6 py-6 sm:py-8 max-w-6xl mx-auto w-full">
         {children}
       </main>
     </div>

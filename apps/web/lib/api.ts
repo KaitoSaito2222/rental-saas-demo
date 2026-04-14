@@ -50,3 +50,18 @@ export async function apiFetch<T>(path: string, init: RequestInit = {}): Promise
 
   return response.json() as Promise<T>;
 }
+
+export function updateProperty(id: string, data: { name?: string; address?: string; province?: string }) {
+  return apiFetch<{ id: string; name: string; address: string; province: string }>(`/properties/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(data),
+  });
+}
+
+export function deleteProperty(id: string) {
+  return apiFetch<{ id: string }>(`/properties/${id}`, { method: 'DELETE' });
+}
+
+export function deleteApplication(id: string) {
+  return apiFetch<{ id: string }>(`/applications/${id}`, { method: 'DELETE' });
+}

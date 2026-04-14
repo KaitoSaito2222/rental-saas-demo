@@ -1,21 +1,27 @@
 'use client';
 
-import { FormEvent, useState } from 'react';
+import { FormEvent, useState, Suspense } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { apiFetch } from '../../../../lib/api';
+import { getCurrentUser } from '../../../../lib/jwt';
 
-export default function NewApplicationPage() {
+function NewApplicationForm() {
+  const searchParams = useSearchParams();
+  const propertyIdFromQuery = searchParams.get('propertyId') ?? '';
+  const currentUser = getCurrentUser();
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const form = event.currentTarget;
     setLoading(true);
     setError('');
     setMessage('');
 
-    const formData = new FormData(event.currentTarget);
+    const formData = new FormData(form);
 
     try {
       const application = await apiFetch('/applications', {
@@ -29,7 +35,7 @@ export default function NewApplicationPage() {
       });
 
       setMessage(`Application submitted (ID: ${(application as { id?: string }).id ?? ''})`);
-      event.currentTarget.reset();
+      form.reset();
     } catch (createError) {
       setError(createError instanceof Error ? createError.message : 'Failed to create application');
     } finally {
@@ -54,6 +60,7 @@ export default function NewApplicationPage() {
           <input
             name="propertyId"
             placeholder="Enter property ID"
+            defaultValue={propertyIdFromQuery}
             className="w-full rounded-xl border border-[var(--border)] bg-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/10 focus:border-primary/30"
             required
           />
@@ -63,6 +70,8 @@ export default function NewApplicationPage() {
           <input
             name="applicantEmail"
             type="email"
+            defaultValue={currentUser?.role === 'TENANT' ? currentUser.email : ''}
+            readOnly={currentUser?.role === 'TENANT'}
             placeholder="applicant@email.com"
             className="w-full rounded-xl border border-[var(--border)] bg-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/10 focus:border-primary/30"
             required
@@ -103,5 +112,13 @@ export default function NewApplicationPage() {
         </button>
       </form>
     </div>
+  );
+}
+
+export default function NewApplicationPage() {
+  return (
+    <Suspense fallback={<div>Loading form...</div>}>
+      <NewApplicationForm />
+    </Suspense>
   );
 }

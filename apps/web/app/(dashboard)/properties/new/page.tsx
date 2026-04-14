@@ -1,23 +1,40 @@
 'use client';
 
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { apiFetch } from '../../../../lib/api';
+import { getCurrentUser } from '../../../../lib/jwt';
 
 const provinces = ['BC', 'AB', 'SK', 'MB', 'ON', 'QC', 'NB', 'NS', 'PE', 'NL', 'NT', 'NU', 'YT'];
 
 export default function NewPropertyPage() {
+  const router = useRouter();
+  const currentUser = getCurrentUser();
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    // Redirect if not authorized to create properties
+    if (currentUser && !['LANDLORD', 'PM', 'ADMIN'].includes(currentUser.role)) {
+      router.replace('/dashboard/properties');
+    }
+  }, [currentUser, router]);
+
+  // Show nothing while checking authorization
+  if (!currentUser || !['LANDLORD', 'PM', 'ADMIN'].includes(currentUser.role)) {
+    return null;
+  }
+
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const form = event.currentTarget;
     setLoading(true);
     setError('');
     setMessage('');
 
-    const formData = new FormData(event.currentTarget);
+    const formData = new FormData(form);
 
     try {
       const property = await apiFetch('/properties', {
@@ -30,7 +47,7 @@ export default function NewPropertyPage() {
       });
 
       setMessage(`Property "${(property as { name?: string }).name ?? ''}" created successfully.`);
-      event.currentTarget.reset();
+      form.reset();
     } catch (createError) {
       setError(createError instanceof Error ? createError.message : 'Failed to create property');
     } finally {

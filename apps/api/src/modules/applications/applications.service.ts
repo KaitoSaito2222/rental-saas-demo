@@ -1,5 +1,6 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { ApplicationStatus, AuditAction, Prisma, ResourceType } from '@prisma/client';
+import { Role } from '@property-copilot/shared';
 import { PrismaService } from '../../prisma/prisma.service.js';
 import { CreateApplicationDto } from './dto/create-application.dto.js';
 import { UpdateApplicationStatusDto } from './dto/update-application-status.dto.js';
@@ -8,9 +9,14 @@ import { UpdateApplicationStatusDto } from './dto/update-application-status.dto.
 export class ApplicationsService {
   constructor(@Inject(PrismaService) private readonly prisma: PrismaService) {}
 
-  list(organizationId: string) {
+  list(user: { id: string; organizationId: string; role?: Role | string }) {
+    const where: Prisma.ApplicationWhereInput =
+      user.role === Role.TENANT
+        ? { organizationId: user.organizationId, applicantUserId: user.id }
+        : { organizationId: user.organizationId };
+
     return this.prisma.application.findMany({
-      where: { organizationId },
+      where,
       orderBy: { createdAt: 'desc' },
       include: { property: true },
     });
@@ -29,6 +35,7 @@ export class ApplicationsService {
       data: {
         organizationId: user.organizationId,
         propertyId: dto.propertyId,
+        applicantUserId: user.id,
         applicantEmail: dto.applicantEmail,
         income: dto.income,
         notes: dto.notes,
@@ -48,9 +55,14 @@ export class ApplicationsService {
     return application;
   }
 
-  async getById(organizationId: string, id: string) {
+  async getById(user: { id: string; organizationId: string; role?: Role | string }, id: string) {
+    const where: Prisma.ApplicationWhereInput =
+      user.role === Role.TENANT
+        ? { organizationId: user.organizationId, id, applicantUserId: user.id }
+        : { organizationId: user.organizationId, id };
+
     const application = await this.prisma.application.findFirst({
-      where: { organizationId, id },
+      where,
       include: { property: true },
     });
 
@@ -66,7 +78,7 @@ export class ApplicationsService {
     id: string,
     dto: UpdateApplicationStatusDto,
   ) {
-    await this.getById(user.organizationId, id);
+    await this.getById(user, id);
 
     const application = await this.prisma.application.update({
       where: { id },
@@ -84,5 +96,23 @@ export class ApplicationsService {
     });
 
     return application;
+  }
+
+  async remove(user: { id: string; organizationId: string }, id: string) {
+    await this.getById(user, id);
+
+    await this.prisma.application.delete({ where: { id } });
+
+    await this.prisma.auditLog.create({
+      data: {
+        organizationId: user.organizationId,
+        userId: user.id,
+        action: AuditAction.APPLICATION_DELETED,
+        resourceType: ResourceType.APPLICATION,
+        resourceId: id,
+      },
+    });
+
+    return { id };
   }
 }

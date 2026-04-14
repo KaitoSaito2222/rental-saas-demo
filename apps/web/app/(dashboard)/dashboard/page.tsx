@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { apiFetch } from '../../../lib/api';
+import { getCurrentUser } from '../../../lib/jwt';
 
 type Stats = {
   properties: number;
@@ -11,6 +12,9 @@ type Stats = {
 };
 
 export default function DashboardPage() {
+  const currentUser = getCurrentUser();
+  const canReviewApplications =
+    currentUser?.role !== undefined && ['LANDLORD', 'PM', 'ADMIN'].includes(currentUser.role);
   const [stats, setStats] = useState<Stats | null>(null);
   const [error, setError] = useState('');
 
@@ -57,7 +61,7 @@ export default function DashboardPage() {
       )}
 
       {stats && (
-        <div className="grid grid-cols-3 gap-4 md:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6">
           <StatCard label="Properties" value={stats.properties} />
           <StatCard label="Applications" value={stats.applications} />
           <StatCard label="Pending" value={stats.pendingApplications} />
@@ -88,7 +92,7 @@ export default function DashboardPage() {
 
           {stats.pendingApplications > 0 && (
             <Link
-              href="/dashboard/properties"
+              href="/dashboard/applications"
               className="rounded-2xl border border-[var(--border)] bg-white p-4 flex items-center gap-4 hover:bg-[var(--surface)] transition-colors"
             >
               <div className="w-10 h-10 rounded-xl bg-[var(--surface)] flex items-center justify-center">
@@ -101,8 +105,15 @@ export default function DashboardPage() {
                 </svg>
               </div>
               <div className="flex-1">
-                <p className="text-sm font-semibold text-primary">Review Applications</p>
-                <p className="text-xs text-[var(--muted)]">{stats.pendingApplications} pending {stats.pendingApplications === 1 ? 'review' : 'reviews'}</p>
+                <p className="text-sm font-semibold text-primary">
+                  {canReviewApplications ? 'Review Applications' : 'My Applications'}
+                </p>
+                <p className="text-xs text-[var(--muted)]">
+                  {stats.pendingApplications}{' '}
+                  {canReviewApplications
+                    ? `pending ${stats.pendingApplications === 1 ? 'review' : 'reviews'}`
+                    : `${stats.pendingApplications === 1 ? 'pending application' : 'pending applications'}`}
+                </p>
               </div>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="9 18 15 12 9 6" />

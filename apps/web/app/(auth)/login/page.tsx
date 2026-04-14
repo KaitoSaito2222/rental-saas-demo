@@ -52,14 +52,15 @@ export default function LoginPage() {
         {/* Demo hint */}
         <div className="rounded-xl bg-[var(--surface)] border border-[var(--border)] px-4 py-3 mb-6 space-y-2">
           <p className="text-xs font-semibold text-primary">Demo credentials</p>
-          <p className="text-xs text-[var(--muted)]">Org slug: <span className="font-mono text-primary">maple-properties</span></p>
           <div className="border-t border-[var(--border)] pt-2 space-y-1">
             <p className="text-xs font-medium text-primary">Landlord</p>
+            <p className="text-xs text-[var(--muted)]">Org slug: <span className="font-mono text-primary">maple-properties</span></p>
             <p className="text-xs text-[var(--muted)]">Email: <span className="font-mono text-primary">landlord@demo.com</span></p>
             <p className="text-xs text-[var(--muted)]">Password: <span className="font-mono text-primary">demo1234</span></p>
           </div>
           <div className="border-t border-[var(--border)] pt-2 space-y-1">
             <p className="text-xs font-medium text-primary">Tenant</p>
+            <p className="text-xs text-[var(--muted)]">Org slug: <span className="font-mono text-primary">maple-properties</span></p>
             <p className="text-xs text-[var(--muted)]">Email: <span className="font-mono text-primary">tenant@demo.com</span></p>
             <p className="text-xs text-[var(--muted)]">Password: <span className="font-mono text-primary">demo1234</span></p>
           </div>
@@ -70,8 +71,7 @@ export default function LoginPage() {
             <label className="block text-sm font-medium text-primary mb-1.5">Organization slug</label>
             <input
               name="organizationSlug"
-              placeholder="maple-properties"
-              defaultValue="maple-properties"
+              placeholder="e.g. maple-properties"
               className="w-full rounded-xl border border-[var(--border)] bg-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/10 focus:border-primary/30"
               required
             />
