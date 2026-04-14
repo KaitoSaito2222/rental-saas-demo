@@ -11,7 +11,7 @@ output "railway_region" {
 output "planned_services" {
   description = "Human-readable summary of the intended app and database resources."
   value = {
-    app_service     = terraform_data.app_service.input
+    app_service      = terraform_data.app_service.input
     database_service = terraform_data.database_service.input
     compliance_notes = [
       "Terraform is a scaffold for the demo until provider wiring is added.",
