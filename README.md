@@ -1,4 +1,4 @@
-# Property Copilot Demo
+# Rental Property Saas Demo
 
 Demo repository for a rental property management platform.
 
