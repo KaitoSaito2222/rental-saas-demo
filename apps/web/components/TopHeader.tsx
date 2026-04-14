@@ -32,7 +32,7 @@ export default function TopHeader() {
     <header className="sticky top-0 z-40 bg-white border-b border-[var(--border)]">
       <div className="flex items-center justify-between px-4 sm:px-6 py-3 max-w-6xl mx-auto">
         <Link href="/dashboard" className="text-sm font-semibold text-primary">
-          Property Copilot
+          Rental Demo
         </Link>
 
         <nav className="hidden md:flex items-center gap-1">

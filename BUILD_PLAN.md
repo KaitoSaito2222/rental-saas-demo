@@ -1,4 +1,4 @@
-# Property Copilot - Build Plan
+# Rental Demo - Build Plan
 
 ## Goal
 
@@ -187,36 +187,36 @@ Not required for the MVP.
 ## Implementation Phases
 
 ### Phase 1 - Scaffold and Data Layer (completed)
-- [ ] npm workspaces monorepo
-- [ ] `packages/shared` - enums + DTOs
-- [ ] `apps/api/prisma/schema.prisma`
-- [ ] `apps/api/prisma/seed.ts`
-- [ ] `PrismaService` (RLS middleware)
-- [ ] `TenantContextService` (AsyncLocalStorage)
-- [ ] `TenantContextInterceptor`
-- [ ] JWT Guard + CurrentUser decorator
-- [ ] `AuthModule` - register, login, JWT strategy
+- [x] npm workspaces monorepo
+- [x] `packages/shared` - enums + DTOs
+- [x] `apps/api/prisma/schema.prisma`
+- [x] `apps/api/prisma/seed.ts`
+- [x] `PrismaService` (RLS middleware)
+- [x] `TenantContextService` (AsyncLocalStorage)
+- [x] `TenantContextInterceptor`
+- [x] JWT Guard + CurrentUser decorator
+- [x] `AuthModule` - register, login, JWT strategy
 
-### Phase 2 - MVP Core CRUD
-- [ ] `AuthModule` (register, login, me)
-- [ ] `PropertiesModule` (CRUD)
-- [ ] `ApplicationsModule` (create + status update)
-- [ ] `DashboardModule` (simple counts)
+### Phase 2 - MVP Core CRUD (completed)
+- [x] `AuthModule` (register, login, me)
+- [x] `PropertiesModule` (CRUD)
+- [x] `ApplicationsModule` (create + status update)
+- [x] `DashboardModule` (simple counts)
 
-### Phase 3 - Minimal Frontend
-- [ ] Next.js + Tailwind + shadcn/ui initialization
-- [ ] Auth pages (login, register)
-- [ ] Dashboard layout
-- [ ] Property create form
-- [ ] Application submission form
-- [ ] Application status display
+### Phase 3 - Minimal Frontend (completed)
+- [x] Next.js + Tailwind + shadcn/ui initialization
+- [x] Auth pages (login, register)
+- [x] Dashboard layout
+- [x] Property create form
+- [x] Application submission form
+- [x] Application status display
 
-### Phase 4 - IaC, CI/CD, Docs
-- [ ] `infra/main.tf` (Railway + Canada region comments)
-- [ ] `.github/workflows/ci.yml`
-- [ ] `.github/workflows/terraform.yml`
-- [ ] `README.md` (English, multi-tenant, data residency, MVP scope)
-- [ ] Railway deploy -> obtain live URL
+### Phase 4 - IaC, CI/CD, Docs (completed)
+- [x] `infra/main.tf` (Railway + Canada region comments)
+- [x] `.github/workflows/ci.yml`
+- [x] `.github/workflows/terraform.yml`
+- [x] `README.md` (English, multi-tenant, data residency, MVP scope)
+- [x] Railway deploy -> obtain live URL
 
 ---
 

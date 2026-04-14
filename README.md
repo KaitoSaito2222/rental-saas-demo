@@ -35,6 +35,36 @@ The repository now includes the Phase 1 to Phase 4 scaffold:
 - `.github/workflows/ci.yml` runs Terraform validation and app checks when app manifests exist.
 - `.github/workflows/terraform.yml` runs plan on pull requests and controlled apply on manual dispatch.
 
+## Design Decisions
+
+### Multi-Tenant Isolation: Prisma Middleware
+
+Tenant data isolation is enforced at the application layer using Prisma middleware (`PrismaService.$use()`), not PostgreSQL Row Level Security.
+
+- Every query is intercepted and `organizationId` is automatically injected into `WHERE` clauses for reads and `data` for writes.
+- `TenantContextService` stores the current org ID in `AsyncLocalStorage`, avoiding the need to pass it through every service method.
+- This approach is visible and testable at the application layer without requiring database-level configuration.
+- PostgreSQL RLS is the recommended addition for production as a second layer of defense in depth.
+
+### Infrastructure: Terraform as a Scaffold
+
+The `infra/` directory contains Terraform files that document the intended deployment shape. The resources use `terraform_data` placeholders and do not provision real infrastructure until a provider (such as the Railway provider) is wired in. The files exist to make the deployment intent reviewable and to hold the Canada-region and PIPEDA rationale as code comments.
+
+### Deployment Region
+
+The design targets the Canada region for data residency alignment with PIPEDA requirements. The current demo is not deployed to a paid cloud environment due to cost constraints. When deploying to production, use a Canada-region host and ensure all PII stays within that boundary.
+
+---
+
+## Demo Account
+
+```
+Email:    landlord@mapleproperties.ca
+Password: demo1234
+```
+
+---
+
 ## Data Residency
 
 The demo is designed around Canadian data residency expectations.
