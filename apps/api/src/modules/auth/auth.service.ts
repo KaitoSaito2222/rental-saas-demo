@@ -39,6 +39,7 @@ export class AuthService {
     const user = await this.tenantContext.run(organization.id, async () => {
       return this.prisma.user.create({
         data: {
+          organizationId: organization.id,
           email: dto.email,
           passwordHash,
           role: dto.role,
