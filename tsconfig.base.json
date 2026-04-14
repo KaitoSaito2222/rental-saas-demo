@@ -10,11 +10,6 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "declaration": true,
-    "sourceMap": true,
-    "baseUrl": ".",
-    "paths": {
-      "@property-copilot/shared": ["packages/shared/src/index.ts"],
-      "@property-copilot/shared/*": ["packages/shared/src/*"]
-    }
+    "sourceMap": true
   }
 }
