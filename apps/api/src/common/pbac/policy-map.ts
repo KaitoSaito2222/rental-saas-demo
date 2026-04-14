@@ -1,4 +1,4 @@
-import { Role } from '@property-copilot/shared';
+import { Role } from '@rental-demo/shared';
 import { PERMISSIONS, type Permission } from './permissions.js';
 
 type RolePolicyMap = Record<Role, Permission[]>;

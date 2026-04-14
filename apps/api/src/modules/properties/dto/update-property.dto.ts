@@ -1,5 +1,5 @@
 import { IsEnum, IsOptional, IsString } from 'class-validator';
-import { Province } from '@property-copilot/shared';
+import { Province } from '@rental-demo/shared';
 
 export class UpdatePropertyDto {
   @IsOptional()

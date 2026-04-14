@@ -29,7 +29,7 @@ export function getCurrentUser(): JwtPayload | null {
     return null;
   }
 
-  const token = window.localStorage.getItem('property-copilot-token');
+  const token = window.localStorage.getItem('rental-demo-token');
   if (!token) return null;
 
   const decoded = decodeJwt(token);

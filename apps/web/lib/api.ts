@@ -9,7 +9,7 @@ export function getStoredToken() {
     return '';
   }
 
-  return window.localStorage.getItem('property-copilot-token') ?? '';
+  return window.localStorage.getItem('rental-demo-token') ?? '';
 }
 
 export function setStoredToken(token: string) {
@@ -17,7 +17,7 @@ export function setStoredToken(token: string) {
     return;
   }
 
-  window.localStorage.setItem('property-copilot-token', token);
+  window.localStorage.setItem('rental-demo-token', token);
 }
 
 export function clearStoredToken() {
@@ -25,7 +25,7 @@ export function clearStoredToken() {
     return;
   }
 
-  window.localStorage.removeItem('property-copilot-token');
+  window.localStorage.removeItem('rental-demo-token');
 }
 
 export async function apiFetch<T>(path: string, init: RequestInit = {}): Promise<T> {

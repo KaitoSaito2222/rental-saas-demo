@@ -1,5 +1,5 @@
 import { Controller, Get, Inject } from '@nestjs/common';
-import { Role } from '@property-copilot/shared';
+import { Role } from '@rental-demo/shared';
 import { CurrentUser } from '../../common/decorators/current-user.decorator.js';
 import { RequirePermissions } from '../../common/decorators/permissions.decorator.js';
 import { PERMISSIONS } from '../../common/pbac/permissions.js';

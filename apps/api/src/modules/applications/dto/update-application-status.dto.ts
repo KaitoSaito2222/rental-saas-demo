@@ -1,5 +1,5 @@
 import { IsEnum } from 'class-validator';
-import { ApplicationStatus } from '@property-copilot/shared';
+import { ApplicationStatus } from '@rental-demo/shared';
 
 export class UpdateApplicationStatusDto {
   @IsEnum(ApplicationStatus)

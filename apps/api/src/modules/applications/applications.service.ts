@@ -1,6 +1,6 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { ApplicationStatus, AuditAction, Prisma, ResourceType } from '@prisma/client';
-import { Role } from '@property-copilot/shared';
+import { Role } from '@rental-demo/shared';
 import { PrismaService } from '../../prisma/prisma.service.js';
 import { CreateApplicationDto } from './dto/create-application.dto.js';
 import { UpdateApplicationStatusDto } from './dto/update-application-status.dto.js';

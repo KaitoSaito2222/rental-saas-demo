@@ -1,11 +1,11 @@
 {
-  "name": "@property-copilot/api",
+  "name": "@rental-demo/api",
   "version": "0.0.1",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/main.ts",
-    "build": "npm run build --workspace @property-copilot/shared && tsc -p tsconfig.json",
+    "build": "npm run build --workspace @rental-demo/shared && tsc -p tsconfig.json",
     "lint": "tsc -p tsconfig.json --noEmit",
     "test": "echo 'API tests will be added with the first integration suite'",
     "db:migrate:dev": "prisma migrate dev",

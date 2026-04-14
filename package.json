@@ -1,16 +1,16 @@
 {
-  "name": "property-copilot-demo",
+  "name": "rental-saas-demo",
   "private": true,
   "workspaces": [
     "apps/*",
     "packages/*"
   ],
   "scripts": {
-    "dev": "npm run dev --workspace @property-copilot/api & npm run dev --workspace @property-copilot/web & wait",
+    "dev": "npm run dev --workspace @rental-demo/api & npm run dev --workspace @rental-demo/web & wait",
     "build": "npm run build --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
-    "db:migrate:dev": "npm run db:migrate:dev --workspace @property-copilot/api",
-    "db:seed": "npm run db:seed --workspace @property-copilot/api"
+    "db:migrate:dev": "npm run db:migrate:dev --workspace @rental-demo/api",
+    "db:seed": "npm run db:seed --workspace @rental-demo/api"
   }
 }

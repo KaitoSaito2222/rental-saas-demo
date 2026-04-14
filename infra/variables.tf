@@ -1,7 +1,7 @@
 variable "project_name" {
   description = "Base name used for demo infrastructure resources."
   type        = string
-  default     = "property-copilot-demo"
+  default     = "rental-saas-demo"
 }
 
 variable "environment" {

@@ -6,8 +6,8 @@ terraform {
 }
 
 locals {
-  project_name   = var.project_name
-  railway_region = var.railway_region
+  project_name     = var.project_name
+  railway_region   = var.railway_region
 
   # Production guidance for later phases:
   # - keep application hosting and PostgreSQL in the Canada region

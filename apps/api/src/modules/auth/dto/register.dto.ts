@@ -1,5 +1,5 @@
 import { IsEmail, IsEnum, IsNotEmpty, IsString, MinLength } from 'class-validator';
-import { Role } from '@property-copilot/shared';
+import { Role } from '@rental-demo/shared';
 
 export class RegisterDto {
   @IsString()

@@ -1,7 +1,7 @@
 services:
   postgres:
     image: postgres:16
-    container_name: property-copilot-postgres
+    container_name: rental-demo-postgres
     restart: unless-stopped
     environment:
       POSTGRES_USER: postgres

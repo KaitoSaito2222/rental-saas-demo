@@ -1,6 +1,6 @@
 import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { Role } from '@property-copilot/shared';
+import { Role } from '@rental-demo/shared';
 import { IS_PUBLIC_KEY } from '../decorators/public.decorator.js';
 import { PERMISSIONS_KEY } from '../decorators/permissions.decorator.js';
 import { rolePolicyMap } from '../pbac/policy-map.js';
